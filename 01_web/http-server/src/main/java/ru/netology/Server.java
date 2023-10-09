@@ -62,7 +62,7 @@ public class Server {
                 return;
             }
 
-            final var filePath = Path.of(".", "Work", "jspr-code", path);
+            final var filePath = Path.of(".", "public", path);
             final var mimeType = Files.probeContentType(filePath);
 
             if (path.equals("/classic.html")) {
