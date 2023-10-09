@@ -38,7 +38,7 @@ public class Server {
     }
 
     public void connect(Socket socket) {
-        try (socket;
+        try (
         final var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         final var out = new BufferedOutputStream(socket.getOutputStream());) {
 
@@ -62,7 +62,7 @@ public class Server {
                 return;
             }
 
-            final var filePath = Path.of(".", "public", path);
+            final var filePath = Path.of(".", "Work", "jspr-code", path);
             final var mimeType = Files.probeContentType(filePath);
 
             if (path.equals("/classic.html")) {
