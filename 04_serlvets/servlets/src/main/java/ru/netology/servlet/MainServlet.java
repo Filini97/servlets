@@ -1,12 +1,14 @@
 package ru.netology.servlet;
 
 import ru.netology.controller.PostController;
+import ru.netology.exception.NotFoundException;
 import ru.netology.repository.PostRepository;
 import ru.netology.service.PostService;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class MainServlet extends HttpServlet {
   private PostController controller;
@@ -20,7 +22,6 @@ public class MainServlet extends HttpServlet {
 
   @Override
   protected void service(HttpServletRequest req, HttpServletResponse resp) {
-    // если деплоились в root context, то достаточно этого
     try {
       final var path = req.getRequestURI();
       final var method = req.getMethod();
@@ -37,18 +38,18 @@ public class MainServlet extends HttpServlet {
       }
       if (method.equals("POST") && path.equals("/api/posts")) {
         controller.save(req.getReader(), resp);
-        return;
       }
 
       if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
         // easy way
         final var id = Long.parseLong(path.substring(path.lastIndexOf("/")));
         controller.removeById(id, resp);
-        return;
       }
+    } catch (NotFoundException e) {
+      e.getMessage();
       resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (IOException ioException) {
+      ioException.getMessage();
       resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
