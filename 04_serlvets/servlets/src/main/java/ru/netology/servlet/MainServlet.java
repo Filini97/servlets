@@ -39,6 +39,7 @@ public class MainServlet extends HttpServlet {
         controller.save(req.getReader(), resp);
         return;
       }
+
       if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
         // easy way
         final var id = Long.parseLong(path.substring(path.lastIndexOf("/")));
