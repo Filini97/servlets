@@ -1,10 +1,8 @@
 package ru.netology.servlet;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.netology.controller.PostController;
 import ru.netology.exception.NotFoundException;
-import ru.netology.repository.PostRepository;
-import ru.netology.service.PostService;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,15 +14,15 @@ public class MainServlet extends HttpServlet {
   private static final String POST = "POST";
   private static final String DELETE = "DELETE";
   private static final String API_POSTS = "/api/posts";
+  private static final String PATH = "ru.netology";
   private static final int NOT_FOUND_STATUS = HttpServletResponse.SC_NOT_FOUND;
   private static final int INTERNAL_SERVER_ERROR_STATUS = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 
   @Override
   public void init() {
-    final var repository = new PostRepository();
-    final var service = new PostService(repository);
-    controller = new PostController(service);
+    final var context = new AnnotationConfigApplicationContext(PATH);
+      controller = context.getBean(PostController.class);
   }
 
   @Override
